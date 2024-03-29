@@ -1,3 +1,3 @@
 # advanced-java
 
-This is a read-me file for the test project
+This is a readme file for the test project
