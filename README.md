@@ -1,1 +1,1 @@
-This is a read-me file for the test project
+This is a file that briefly describes the test project
