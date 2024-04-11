@@ -22,20 +22,48 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public Optional<User> findById(int id) {
-		// TODO Auto-generated method stub
+		var conn = Database.instance().getConnection();
+		try {
+			var stmt = conn.prepareStatement("select name from user where id=?");
+			stmt.setInt(1, id);
+			var rs = stmt.executeQuery();
+			if(rs.next()) {
+				User user = new User(id, rs.getString("name"));
+				return Optional.of(user);
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			throw new DaoException(e);
+		}
 		return Optional.empty();
 	}
 
 	@Override
-	public void update(User t) {
-		// TODO Auto-generated method stub
+	public void update(User u) {
+		var conn = Database.instance().getConnection();
+		try {
+			var stmt = conn.prepareStatement("update user set name=? where id=?");
+			stmt.setString(1, u.getName());
+			stmt.setInt(2, u.getId());
+			stmt.executeUpdate();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new DaoException(e);
+		}
 		
 	}
 
 	@Override
-	public void delete(User t) {
-		// TODO Auto-generated method stub
-		
+	public void delete(User u) {
+		var conn = Database.instance().getConnection();
+		try {
+			var stmt = conn.prepareStatement("delete from user where id=?");
+			stmt.setInt(1, u.getId());
+			stmt.executeUpdate();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new DaoException(e);
+		}
 	}
 
 	@Override

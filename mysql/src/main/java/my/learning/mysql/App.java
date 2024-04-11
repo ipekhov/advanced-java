@@ -18,10 +18,27 @@ public class App {
 			UserDao userDao = new UserDaoImpl();
 			// userDao.save(new User("Harrison"));
 			// userDao.save(new User("Annabeth"));
-			List<User> users = userDao.findAll();
-			for(User u : users) {
-				System.out.println(u);
-			}
+			
+			// var users = userDao.findAll();
+			// users.forEach(System.out::println);
+
+			/* var userOpt = userDao.findById(12);
+			if(userOpt.isPresent()) {
+				System.out.println("Retrieved: " + userOpt.get());
+			} else {
+				System.out.println("No user retrieved");
+			} */
+			
+			// userDao.delete(new User(11, null));
+			// userDao.delete(new User(13, null));
+			
+			userDao.findAll()
+				   .forEach(System.out::println);
+			
+			userDao.update(new User(1, "Michael"));
+			
+			userDao.findAll()
+				   .forEach(System.out::println);
 			
 		} catch (SQLException e) {
 			System.out.println("Cannot connect to the database");
