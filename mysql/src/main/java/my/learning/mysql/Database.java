@@ -1,20 +1,44 @@
 package my.learning.mysql;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class Database {
 
-	private static final Database DB = new Database();
-	private static final String URL = "jdbc:mysql://localhost:3306/people";
-	private Connection conn;
+	private static Database INSTANCE;
 	
-	public static Database instance() {
-		return DB;
+	private final String url;
+	private final String user;
+	private final String password;
+	
+	private Connection conn;
+	private Properties props = new Properties();
+	
+	public static synchronized Database instance() {
+		if(INSTANCE == null) {
+			try {
+				INSTANCE = new Database();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return INSTANCE;
 	}
 	
-	private Database() {
+	private Database() throws IOException {
+		
+		props.load(App.class.getResourceAsStream("/config/database.dev.properties"));
+		
+		String host = props.getProperty("host");
+		String port = props.getProperty("port");
+		String database = props.getProperty("database");
+		
+		this.url = String.format("jdbc:mysql://%s:%s/%s", host, port, database);
+		this.user = props.getProperty("user");
+		this.password = props.getProperty("password");
 	}
 	
 	public Connection getConnection() {
@@ -22,7 +46,7 @@ public class Database {
 	}
 	
 	public void connect() throws SQLException {
-		this.conn = DriverManager.getConnection(URL, "root", "1234");
+		this.conn = DriverManager.getConnection(this.url, this.user, this.password);
 	}
 	
 	public void close() throws SQLException {

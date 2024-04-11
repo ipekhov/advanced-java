@@ -1,14 +1,20 @@
 package my.learning.mysql;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Hello world!
  *
  */
 public class App {
-	public static void main(String[] args) {
+	
+	private static void init() {
+	}
+	
+ 	public static void main(String[] args) {
 
 		var db = Database.instance();
 		
@@ -22,12 +28,15 @@ public class App {
 			// var users = userDao.findAll();
 			// users.forEach(System.out::println);
 
-			/* var userOpt = userDao.findById(12);
+			var userOpt = userDao.findById(4);
 			if(userOpt.isPresent()) {
-				System.out.println("Retrieved: " + userOpt.get());
+				User u = userOpt.get();
+				System.out.println("Retrieved: " + u);
+				u.setName("Harry");
+				userDao.update(u);
 			} else {
 				System.out.println("No user retrieved");
-			} */
+			}
 			
 			// userDao.delete(new User(11, null));
 			// userDao.delete(new User(13, null));
@@ -35,13 +44,10 @@ public class App {
 			userDao.findAll()
 				   .forEach(System.out::println);
 			
-			userDao.update(new User(1, "Michael"));
-			
-			userDao.findAll()
-				   .forEach(System.out::println);
-			
 		} catch (SQLException e) {
 			System.out.println("Cannot connect to the database");
+			e.printStackTrace();
+			return;
 		}
 			
 		
