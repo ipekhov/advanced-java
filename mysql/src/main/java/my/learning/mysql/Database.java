@@ -15,7 +15,10 @@ public class Database {
 	}
 	
 	private Database() {
-		
+	}
+	
+	public Connection getConnection() {
+		return this.conn;
 	}
 	
 	public void connect() throws SQLException {
