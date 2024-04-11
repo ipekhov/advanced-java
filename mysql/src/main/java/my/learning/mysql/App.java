@@ -6,13 +6,10 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Hello world!
+ * MySQL App
  *
  */
 public class App {
-	
-	private static void init() {
-	}
 	
  	public static void main(String[] args) {
 
@@ -28,7 +25,7 @@ public class App {
 			// var users = userDao.findAll();
 			// users.forEach(System.out::println);
 
-			var userOpt = userDao.findById(4);
+			/* var userOpt = userDao.findById(4);
 			if(userOpt.isPresent()) {
 				User u = userOpt.get();
 				System.out.println("Retrieved: " + u);
@@ -36,7 +33,7 @@ public class App {
 				userDao.update(u);
 			} else {
 				System.out.println("No user retrieved");
-			}
+			} */
 			
 			// userDao.delete(new User(11, null));
 			// userDao.delete(new User(13, null));
