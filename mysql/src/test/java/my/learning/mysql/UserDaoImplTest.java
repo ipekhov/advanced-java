@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,8 +40,6 @@ public class UserDaoImplTest {
 	@Before
 	public void setUp() throws SQLException, IOException {
 		this.users = loadUsers();
-		this.users.forEach(System.out::println);
-		System.out.println(this.users.size());
 		
 		var db = Database.instance();
 		db.connect();
@@ -53,8 +52,45 @@ public class UserDaoImplTest {
 		Database.instance().close();
 	}
 	
-	public void testSaveMultiple() {
+	private int getMaxId() throws SQLException {
+		var stmt = this.conn.createStatement();
+		var rs = stmt.executeQuery("select max(id) as id from user");
+		rs.next();
+		var id = rs.getInt("id");
+		stmt.close();
+		return id;
+	}
+	
+	private List<User> findUsersInRange(int minId, int maxId) throws SQLException {
+		var stmt = this.conn.prepareStatement("select id, name from user where id >= ? and id <= ?");
+		stmt.setInt(1, minId);
+		stmt.setInt(2, maxId);
+		var rs = stmt.executeQuery();
 		
+		List<User> res = new ArrayList<>();
+		while(rs.next()) {
+			res.add(new User(rs.getInt("id"), rs.getString("name")));
+		}
+		stmt.close();
+		return res;
+	}
+	
+	@Test
+	public void testSaveMultiple() throws SQLException {
+		UserDao userDao = new UserDaoImpl();
+		for(var user : this.users) {
+			userDao.save(user);
+		}
+		
+		var maxId = getMaxId();
+		for(int i = 0; i < users.size(); i++) {
+			int id = (maxId - users.size()) + i + 1;
+			users.get(i).setId(id);
+		}
+		
+		var retrievedUsers = findUsersInRange((maxId - users.size()) + 1, maxId);
+		assertEquals("Number of retrieved users not equal to the number of inserted ones", retrievedUsers.size(), this.users.size());
+		assertEquals("Retrieved users don't match saved users", users, retrievedUsers);
 	}
 
 	@Test
