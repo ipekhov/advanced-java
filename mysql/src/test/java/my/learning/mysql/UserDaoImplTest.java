@@ -52,6 +52,33 @@ public class UserDaoImplTest {
 		Database.instance().close();
 	}
 	
+	@Test
+	public void testFindAndUpdate() throws SQLException {
+		var user = users.get(0);
+		UserDao userDao = new UserDaoImpl();
+		userDao.save(user);
+		
+		var maxId = getMaxId();
+		user.setId(maxId);
+		
+		var retrievedUserOpt = userDao.findById(maxId);
+		assertTrue("No user found", retrievedUserOpt.isPresent());
+		var retrievedUser = retrievedUserOpt.get();
+		assertEquals("Retrieved user doesn't match saved user", user, retrievedUser);
+
+		// System.out.println(retrievedUser);
+		
+		user.setName("abcdefg");
+		userDao.update(user);
+		
+		retrievedUserOpt = userDao.findById(maxId);
+		assertTrue("No updated user found", retrievedUserOpt.isPresent());
+		retrievedUser = retrievedUserOpt.get();
+		assertEquals("Retrieved user doesn't match saved user", user, retrievedUser);
+		
+		// System.out.println(retrievedUser);
+	}
+	
 	private int getMaxId() throws SQLException {
 		var stmt = this.conn.createStatement();
 		var rs = stmt.executeQuery("select max(id) as id from user");
@@ -83,8 +110,8 @@ public class UserDaoImplTest {
 		}
 		
 		var maxId = getMaxId();
-		for(int i = 0; i < users.size(); i++) {
-			int id = (maxId - users.size()) + i + 1;
+		for(int i = 0; i < this.users.size(); i++) {
+			int id = (maxId - this.users.size()) + i + 1;
 			users.get(i).setId(id);
 		}
 		
@@ -92,11 +119,29 @@ public class UserDaoImplTest {
 		assertEquals("Number of retrieved users not equal to the number of inserted ones", retrievedUsers.size(), this.users.size());
 		assertEquals("Retrieved users don't match saved users", users, retrievedUsers);
 	}
+	
+	@Test
+	public void testFindAll() throws SQLException {
+		UserDao userDao = new UserDaoImpl();
+		for(var user : this.users) {
+			userDao.save(user);
+		}
+		
+		var maxId = getMaxId();
+		for(int i = 0; i < this.users.size(); i++) {
+			int id = (maxId - this.users.size()) + i + 1;
+			users.get(i).setId(id);
+		}
+		
+		var dbUsers = userDao.findAll();
+		dbUsers = dbUsers.subList(dbUsers.size() - users.size(), dbUsers.size());
+		assertEquals("Number of retrieved users not equal to the number of inserted ones", dbUsers.size(), this.users.size());
+		assertEquals("Retrieved users don't match saved users", users, dbUsers);
+	}
 
 	@Test
 	public void testSave() throws SQLException {
 		User user = new User("Jupiter");
-		
 		UserDao userDao = new UserDaoImpl();
 		userDao.save(user);
 		
@@ -110,5 +155,34 @@ public class UserDaoImplTest {
 		assertEquals("User retirved doesn't match the one inserted", user.getName(), name);
 		
 		stmt.close();
+	}
+	
+	@Test
+	public void testDelete() throws SQLException {
+		UserDao userDao = new UserDaoImpl();
+		for(var user : this.users) {
+			userDao.save(user);
+		}
+		
+		var maxId = getMaxId();
+		for(int i = 0; i < this.users.size(); i++) {
+			int id = (maxId - this.users.size()) + i + 1;
+			users.get(i).setId(id);
+		}
+		
+		var deleteUserIndex = this.users.size() / 2;
+		var deleteUser = this.users.get(deleteUserIndex);
+		int initialSize = this.users.size();
+		
+		// System.out.println(deleteUser);
+		users.remove(deleteUser);
+		// System.out.println(this.users);
+		
+		userDao.delete(deleteUser);
+		var retrievedUsers = findUsersInRange((maxId - initialSize) + 1, maxId);
+		// System.out.println(retrievedUsers);
+		
+		assertEquals("Number of retrieved users not equal to the number of inserted ones", retrievedUsers.size(), this.users.size());
+		assertEquals("Retrieved users don't match saved users", users, retrievedUsers);
 	}
 }

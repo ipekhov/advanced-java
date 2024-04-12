@@ -72,7 +72,7 @@ public class UserDaoImpl implements UserDao {
 		List<User> users = new ArrayList<>();
 		try {
 			var stmt = conn.createStatement();
-			var rs = stmt.executeQuery("select id, name from user");
+			var rs = stmt.executeQuery("select id, name from user order by id");
 			
 			while(rs.next()) {
 				users.add(new User(rs.getInt(1), rs.getString(2)));
