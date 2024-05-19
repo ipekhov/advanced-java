@@ -1,23 +1,47 @@
 package my.learning.app.console.command;
 
-import my.learning.app.console.frontend.CommandParseException;
+import javax.imageio.spi.ServiceRegistry;
 
-public class CreateServiceCommand extends UserCommand {
-	
+import my.learning.app.console.domain.AverageValueService;
+import my.learning.app.console.domain.FlatRateService;
+import my.learning.app.console.domain.MultipleFactoredService;
+import my.learning.app.console.domain.ServiceType;
+import my.learning.app.console.repository.RepositoryStoreException;
+import my.learning.app.console.repository.ServiceRepository;
+
+public class CreateServiceCommand implements UserCommand {
+
 	private final String serviceName;
-	private final String serviceType;
-	private final Double[] values;
+	private final ServiceType serviceType;
+	private final Double value;
 
-	public CreateServiceCommand(String serviceName, String serviceType, Double[] values) {
+	public CreateServiceCommand(String serviceName, String serviceType, Double value) {
 		this.serviceName = serviceName;
-		this.serviceType = serviceName;
-		this.values = values;
+		this.serviceType = ServiceType.fromString(serviceType);
+		this.value = value;
 	}
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-
+		ServiceRepository repo = ServiceRepository.getInstance();
+		try {
+			switch (this.serviceType) {
+				case AVERAGE: {
+					repo.add(new AverageValueService(serviceName, value));
+					return;
+				}
+				case FLAT_RATE: {
+					repo.add(new FlatRateService(serviceName, value));
+					return;
+				}
+				case MULTIFACTOR: {
+					repo.add(new MultipleFactoredService(serviceName, value));
+					return;
+				}
+			}
+		} catch(RepositoryStoreException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 }

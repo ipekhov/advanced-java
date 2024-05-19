@@ -1,8 +1,10 @@
 package my.learning.app.console.command;
 
 import my.learning.app.console.domain.Client;
+import my.learning.app.console.repository.ClientRepository;
+import my.learning.app.console.repository.RepositoryStoreException;
 
-public class CreateClientCommand extends UserCommand {
+public class CreateClientCommand implements UserCommand {
 	
 	private final String clientName;
 
@@ -12,7 +14,11 @@ public class CreateClientCommand extends UserCommand {
 
 	@Override
 	public void execute() {
-		clientRepository.add(new Client(this.clientName));
+		try {
+			ClientRepository.getInstance().add(new Client(this.clientName));
+		} catch (RepositoryStoreException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 }

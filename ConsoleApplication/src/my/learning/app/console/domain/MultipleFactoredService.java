@@ -24,8 +24,9 @@ public class MultipleFactoredService extends Service {
 	}
 
 	@Override
-	public String getTypeStr() {
-		return "multiple";
+	public ServiceType getServiceType() {
+		return ServiceType.MULTIFACTOR;
 	}
+		
 
 }

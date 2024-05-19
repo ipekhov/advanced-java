@@ -21,8 +21,8 @@ public class FlatRateService extends Service {
 	}
 
 	@Override
-	public String getTypeStr() {
-		return "constant";
+	public ServiceType getServiceType() {
+		return ServiceType.FLAT_RATE;
 	}
 
 }

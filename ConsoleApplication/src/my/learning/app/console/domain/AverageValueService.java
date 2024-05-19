@@ -25,8 +25,8 @@ public class AverageValueService extends Service {
 	}
 
 	@Override
-	public String getTypeStr() {
-		return "average";
+	public ServiceType getServiceType() {
+		return ServiceType.AVERAGE;
 	}
 
 }

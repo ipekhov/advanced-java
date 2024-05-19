@@ -12,11 +12,11 @@ import my.learning.app.console.service.BillingService;
 
 public class Application {
 	
-	private ClientRepository clientRepository = new ClientRepository();
+	private ClientRepository clientRepository = ClientRepository.getInstance();
 	
-	private ServiceRepository serviceRepository = new ServiceRepository();
+	private ServiceRepository serviceRepository = ServiceRepository.getInstance();
 	
-	private BillingService billingService = new BillingService();
+	private BillingService billingService = BillingService.getInstance();
 	
 
 	public static void main(String[] args) {

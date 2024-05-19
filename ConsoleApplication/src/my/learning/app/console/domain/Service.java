@@ -13,7 +13,7 @@ public abstract class Service implements Named {
 	
 	public abstract Double calculateBill(Optional<ServiceConsumption> consumption);
 	
-	public abstract String getTypeStr();
+	public abstract ServiceType getServiceType();
 	
 	@Override
 	public String getName() {
