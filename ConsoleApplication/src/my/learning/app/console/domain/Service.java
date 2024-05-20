@@ -36,4 +36,9 @@ public abstract class Service implements Named {
 		Service other = (Service) obj;
 		return Objects.equals(name, other.name);
 	}
+
+	@Override
+	public String toString() {
+		return "Service [name=" + name + ", ServiceType=" + getServiceType() + "]";
+	}
 }

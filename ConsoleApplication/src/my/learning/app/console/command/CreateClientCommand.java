@@ -2,7 +2,7 @@ package my.learning.app.console.command;
 
 import my.learning.app.console.domain.Client;
 import my.learning.app.console.repository.ClientRepository;
-import my.learning.app.console.repository.RepositoryStoreException;
+import my.learning.app.console.repository.RepositoryAlreadyExistsException;
 
 public class CreateClientCommand implements UserCommand {
 	
@@ -16,8 +16,9 @@ public class CreateClientCommand implements UserCommand {
 	public void execute() {
 		try {
 			ClientRepository.getInstance().add(new Client(this.clientName));
-		} catch (RepositoryStoreException e) {
-			System.out.println(e.getMessage());
+			System.out.println("Created client " + this.clientName + ".");
+		} catch (RepositoryAlreadyExistsException e) {
+			System.out.println("Client with name " + this.clientName + " already exists.");
 		}
 	}
 

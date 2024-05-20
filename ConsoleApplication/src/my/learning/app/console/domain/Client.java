@@ -16,17 +16,26 @@ public class Client implements Named {
 	
 	public Client addService(Service service) {
 		if(this.services.contains(service)) {
-			throw new RuntimeException("Client " + this.name + " already has service " + service);
+			throw new IllegalArgumentException("Client " + this.name + " already has service " + service);
 		}
 		this.services.add(service);
+		System.out.println("Service " + service.getName() + " is added to the client " + name + ".");
 		return this;
 	}
-	
+
 	public Client addConsumption(ServiceConsumption consumption) {
-		if(this.consumptions.contains(consumptions)) {
-			throw new RuntimeException("Client " + this.name + " already has consumption for service " + consumption.getService());
+		if(this.consumptions.contains(consumption)) {
+			throw new IllegalArgumentException("Client " + this.name + " already has consumption for service " + consumption.getService());
 		}
 		this.consumptions.add(consumption);
+		System.out.println("Consumption "
+				+ consumption.getConsumption()
+				+ " for service "
+				+ consumption.getService().getName() 
+				+ " is added to the client "
+				+ name
+				+ "."
+				);
 		return this;
 	}
 	
@@ -63,6 +72,11 @@ public class Client implements Named {
 			return false;
 		Client other = (Client) obj;
 		return Objects.equals(name, other.name);
+	}
+	
+	@Override
+	public String toString() {
+		return "Client [name=" + name + ", services=" + services + ", consumptions=" + consumptions + "]";
 	}
 	
 }

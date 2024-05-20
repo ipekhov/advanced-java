@@ -1,12 +1,10 @@
 package my.learning.app.console.command;
 
-import javax.imageio.spi.ServiceRegistry;
-
 import my.learning.app.console.domain.AverageValueService;
 import my.learning.app.console.domain.FlatRateService;
 import my.learning.app.console.domain.MultipleFactoredService;
 import my.learning.app.console.domain.ServiceType;
-import my.learning.app.console.repository.RepositoryStoreException;
+import my.learning.app.console.repository.RepositoryAlreadyExistsException;
 import my.learning.app.console.repository.ServiceRepository;
 
 public class CreateServiceCommand implements UserCommand {
@@ -28,19 +26,20 @@ public class CreateServiceCommand implements UserCommand {
 			switch (this.serviceType) {
 				case AVERAGE: {
 					repo.add(new AverageValueService(serviceName, value));
-					return;
+					break;
 				}
 				case FLAT_RATE: {
 					repo.add(new FlatRateService(serviceName, value));
-					return;
+					break;
 				}
 				case MULTIFACTOR: {
 					repo.add(new MultipleFactoredService(serviceName, value));
-					return;
+					break;
 				}
 			}
-		} catch(RepositoryStoreException e) {
-			System.out.println(e.getMessage());
+			System.out.println("Created service " + serviceName + ".");
+		} catch(RepositoryAlreadyExistsException e) {
+			System.out.println("Service with name " + this.serviceName + " already exists.");
 		}
 	}
 

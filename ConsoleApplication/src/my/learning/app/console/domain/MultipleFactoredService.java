@@ -18,7 +18,7 @@ public class MultipleFactoredService extends Service {
 	@Override
 	public Double calculateBill(Optional<ServiceConsumption> consumption) {
 		if(consumption.isEmpty()) {
-			throw new RuntimeException("Consumption is required for multiple factor service " + this.getName());
+			throw new IllegalArgumentException("Consumption is required for multiple factor service " + this.getName());
 		}
 		return factor * consumption.get().getConsumption();
 	}
