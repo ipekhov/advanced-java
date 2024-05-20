@@ -15,6 +15,8 @@ public abstract class Service implements Named {
 	
 	public abstract ServiceType getServiceType();
 	
+	public abstract Double getRate();
+	
 	@Override
 	public String getName() {
 		return this.name;
@@ -39,6 +41,6 @@ public abstract class Service implements Named {
 
 	@Override
 	public String toString() {
-		return "Service [name=" + name + ", ServiceType=" + getServiceType() + "]";
+		return "Service[name=" + name + ", type=" + getServiceType() + ", rate=" + getRate() + "]";
 	}
 }

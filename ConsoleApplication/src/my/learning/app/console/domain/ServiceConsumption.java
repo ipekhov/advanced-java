@@ -54,9 +54,9 @@ public class ServiceConsumption implements Named {
 		return Objects.equals(name, other.name);
 	}
 
-	@Override
+    @Override
 	public String toString() {
-		return "ServiceConsumption [client=" + client + ", service=" + service + ", consumption=" + consumption + "]";
+		return "ServiceConsumption[name=" + name + ", consumption=" + consumption + "]";
 	}
 
 }

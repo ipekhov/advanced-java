@@ -11,6 +11,7 @@ public class FlatRateService extends Service {
 		this.rate = rate;
 	}
 
+	@Override
 	public Double getRate() {
 		return rate;
 	}

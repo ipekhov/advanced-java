@@ -29,4 +29,13 @@ public class AverageValueService extends Service {
 		return ServiceType.AVERAGE;
 	}
 
+	@Override
+	public Double getRate() {
+		Double avg = 0.0;
+		for(Double value : this.values) {
+			avg += ( value / values.length );
+		}
+		return avg;
+	}
+
 }

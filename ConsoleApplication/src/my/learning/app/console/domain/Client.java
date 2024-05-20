@@ -76,7 +76,21 @@ public class Client implements Named {
 	
 	@Override
 	public String toString() {
-		return "Client [name=" + name + ", services=" + services + ", consumptions=" + consumptions + "]";
+		StringBuilder res = new StringBuilder("Client ")
+				.append(name)
+				.append("; services: ");
+		boolean hasOne = false;
+		for(Service s : this.services) {
+			if(hasOne) {
+				res.append(", ");
+			}
+			res.append(s.getName());
+			hasOne = true;
+		}
+		if(!hasOne) {
+			res.append("<none>");
+		}
+		return res.toString();
 	}
 	
 }

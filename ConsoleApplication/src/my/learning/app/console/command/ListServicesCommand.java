@@ -13,7 +13,9 @@ public class ListServicesCommand implements UserCommand {
 		if(services.isEmpty()) {
 			System.out.println("No services are found");
 		} else {
-			services.forEach(System.out::println);
+			services.forEach(s -> { 
+				System.out.println(s.getName() + " " + s.getServiceType().getStringValue() + " with rate " + s.getRate()); 
+			});
 		}
 	}
 

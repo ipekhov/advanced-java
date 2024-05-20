@@ -4,15 +4,16 @@ import java.util.Optional;
 
 public class MultipleFactoredService extends Service {
 
-	private final Double factor;
+	private final Double rate;
 
 	public MultipleFactoredService(String name, Double factor) {
 		super(name);
-		this.factor = factor;
+		this.rate = factor;
 	}
 
-	public Double getFactor() {
-		return factor;
+	@Override
+	public Double getRate() {
+		return rate;
 	}
 
 	@Override
@@ -20,7 +21,7 @@ public class MultipleFactoredService extends Service {
 		if(consumption.isEmpty()) {
 			throw new IllegalArgumentException("Consumption is required for multiple factor service " + this.getName());
 		}
-		return factor * consumption.get().getConsumption();
+		return rate * consumption.get().getConsumption();
 	}
 
 	@Override
