@@ -3,6 +3,7 @@ package my.learning.app.console.domain;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Client implements Named {
 
@@ -73,6 +74,12 @@ public class Client implements Named {
 		Client other = (Client) obj;
 		return Objects.equals(name, other.name);
 	}
+
+	/* @Override
+	public String toString() {
+		String _services = services.stream().map(_services::toString()).collect(Collectors.joining(", "));
+		return "Client [name=" + name + ", services=" + + ", consumptions=" + consumptions + "]";
+	} */
 	
 	@Override
 	public String toString() {

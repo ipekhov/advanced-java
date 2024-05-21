@@ -56,7 +56,7 @@ public class ServiceConsumption implements Named {
 
     @Override
 	public String toString() {
-		return "ServiceConsumption[name=" + name + ", consumption=" + consumption + "]";
+		return "ServiceConsumption[" + name + ": " + consumption + "]";
 	}
 
 }
